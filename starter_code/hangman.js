@@ -39,13 +39,12 @@ function Hangman(wordsArray) {
 
 Hangman.prototype.checkIfLetter = function(userInput) {
     
-console.log(userInput);
 
   if (userInput >= 65 || userInput <= 90) {
-    console.log(`checkIfLetter true`);
+    
     return true;
     } else {
-      console.log(`checkIfLetter false`);
+      
       return false;
     }
   }
@@ -56,8 +55,12 @@ console.log(userInput);
 
 Hangman.prototype.checkClickedLetters = function (letter) {
   
-  if (theGame.correctLetters.includes(letter) || theGame.wrongLetters.includes(letter)) {
-    console.log('This letter has already been called.')
+// console.log('Function is getting to checkClickedLetters');
+
+if (this.correctLetters.includes(letter) || this.wrongLetters.includes(letter)) {
+    console.log('This letter has already been called.');
+    this.addWrongLetter(letter);
+    this.checkGameOver();
     return false;
   } else {
     return true;
@@ -67,14 +70,15 @@ Hangman.prototype.checkClickedLetters = function (letter) {
 
 Hangman.prototype.addCorrectLetter = function (letter) {
 
-  if (theGame.secretWord.includes(letter)) {
+  if (this.secretWord.includes(letter)) {
 
-      for (i = 0; i < theGame.secretWord.length; i++) {
-        if(letter === theGame.secretWord[i]){
-          theGame.correctLetters.push(letter);
+      for (i = 0; i < this.secretWord.length; i++) {
+        if(letter === this.secretWord[i]){
+          this.correctLetters.push(letter);
+          // console.log(this.correctLetters);
       }
     }
-    console.log("====",theGame.correctLetters);
+    // console.log("Correct letters: ",this.correctLetters);
   };
 }
 
@@ -82,22 +86,22 @@ Hangman.prototype.addWrongLetter = function (letter) {
   this.errorsLeft--;
   this.numberWrong++;
   this.wrongLetters.push(letter);
-  console.log(`Correct letters: ${theGame.correctLetters}`);
+  // console.log(`Incorrect letters: ${this.wrongLetters}`);
 };
 
 Hangman.prototype.checkGameOver = function () {
-  if (theGame.errorsLeft === 0) {
+  if (this.errorsLeft === 0) {
     alert(`Sorry, better luck killing an innocent Hangman next time!`);
-    theGame = new Hangman(words);
-    console.log(theGame.secretWord);
+    setTimeout(function(){ location.reload(); }, 2000);
+    // console.log(this.secretWord);
   }
 }
 
 Hangman.prototype.checkWinner = function () {
-  if (theGame.correctLetters.length === theGame.secretWord.length) {
+  if (this.correctLetters.length === this.secretWord.length) {
     alert(`Amazing, you've killed an innocent Hangman!`);
-    theGame = new Hangman(words);
-    console.log(theGame.secretWord);
+    setTimeout(function(){ location.reload(); }, 2000);
+    // console.log(this.secretWord);
   }
 };
 
@@ -105,11 +109,11 @@ Hangman.prototype.guessLetter = function(letter) {
   if (this.secretWord.includes(letter)) {
     this.addCorrectLetter(letter);
     // PLACEHOLDER FOR ADDING LETTER TO WORD LINES
-    console.log(`Nice! ${letter} is part of the secret word!`)
+    // console.log(`Nice! ${letter} is part of the secret word!`);
   } else {
     this.addWrongLetter(letter);
     // PLACEHOLER FOR ADDING BODY + ADDING LETTER TO LIST OF WRONG LETTERS
-    console.log(`Sorry, ${letter} isn't part of the secret word!`)
+    // console.log(`Sorry, ${letter} isn't part of the secret word!`)
   }
 }
 
@@ -119,22 +123,30 @@ var checkButton = document.getElementById('check-button');
 
 document.getElementById('start-game-button').onclick = function () {
 
+  theGame = new Hangman(words);
+  
   var theCanvas = new HangmanCanvas()
 
+  console.log(theGame.secretWord);
+
   document.onkeydown = function(e) {
-    if(theGame.checkIfLetter(e.keyCode) && theGame.checkClickedLetters(e.key)){
-      
-      var key = e.key.toUpperCase();
-      
+    // console.log('blah');
+    // console.log(theGame.checkIfLetter(e.keyCode));
+    // console.log('blah');
+    // console.log(theGame.checkClickedLetters(e.key));
+    
+    var key = e.key.toUpperCase();
+    
+    if(theGame.checkIfLetter(e.keyCode) && theGame.checkClickedLetters(key)){
+
       theGame.guessLetter(key);
-  
-      theGame.checkGameOver();
   
       theGame.checkWinner();
 
-  }}};
+      theGame.checkGameOver();
+    }
 
+console.log(theGame);
 
-var theGame = new Hangman(words);
+  }};
 
-console.log(theGame.secretWord);

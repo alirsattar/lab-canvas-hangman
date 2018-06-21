@@ -1,8 +1,8 @@
 
 function HangmanCanvas() {
   this.ctx = document.getElementById('hangman').getContext('2d');
-  wordsToGuess = [];
-  secretWord 
+
+  
 }
 
 HangmanCanvas.prototype.createBoard = function () {
