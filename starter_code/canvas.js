@@ -1,6 +1,8 @@
 
-function HangmanCanvas(secretWord) {
+function HangmanCanvas() {
   this.ctx = document.getElementById('hangman').getContext('2d');
+  wordsToGuess = [];
+  secretWord 
 }
 
 HangmanCanvas.prototype.createBoard = function () {
@@ -30,3 +32,6 @@ HangmanCanvas.prototype.gameOver = function () {
 HangmanCanvas.prototype.winner = function () {
 
 };
+
+
+
